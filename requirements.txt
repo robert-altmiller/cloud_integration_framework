@@ -1,0 +1,7 @@
+python-dotenv
+fuzzywuzzy
+pandas
+pyspark
+mlflow
+azure-ai-textanalytics
+numpy
