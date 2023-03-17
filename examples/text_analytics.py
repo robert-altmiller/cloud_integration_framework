@@ -1,10 +1,10 @@
 # library and file imports
-from helpers.helpers import *
+from helpers.main import *
 
 
 # class_obj class is in --> azure_helpers.py
-def azure_text_analytics_unit_test(config = None, textanalytics_obj = None):
-    # unit test for azure congitive services text analytics sub class
+def azure_text_analytics_api_test(textanalytics_obj = None):
+    # test azure cognitive services api functionality
     
     text_list = \
     [

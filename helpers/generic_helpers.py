@@ -1,5 +1,6 @@
 # library and file imports
 import os, json
+import pandas as pd
 
 
 def file_folder_exists(path = None):
@@ -46,3 +47,9 @@ def write_to_local(data = None, folderpath = None, filename = None):
         os.makedirs(folderpath)
     with open(filepath, "w") as f:
         f.write(data)
+
+
+def read_file_with_pandas(filename = None, filetype = None):
+    """read csv file using pandas"""
+    if filetype.lower() == "csv":
+        return pd.read_csv(filename)

@@ -114,3 +114,19 @@ class textanalytics(azureclass):
                 entity_dict["entity_offset"] = entity.offset
                 entity_list.append(entity_dict)
             return get_json_dumps([{"input_text": self.text, "entities": entity_dict}])
+
+
+
+class azurestorageaccount(azureclass):
+    
+    # class constructor    
+    def __init__(self, config):
+        # get all configuration variables
+        self.filename = None
+        super().__init__(config)
+
+    def set_filename(self, filename):
+        """
+        set text value an format as list
+        """
+        self.filename = filename

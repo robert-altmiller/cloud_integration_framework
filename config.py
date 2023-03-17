@@ -1,7 +1,7 @@
 # library and file imports
 import os
 from dotenv import load_dotenv
-from helpers.helpers import *
+from helpers.main import *
 
 
 # load .env environment file
@@ -13,27 +13,46 @@ class Config:
 
     # class constructor    
     def __init__(self):
-        # i/o variables
-        self.DATA_LOCATION = os.getenv('DATA_LOCATION')
-        # azure variables
-        self.AZURE_COG_SERVICES_BASE_URL = os.getenv('AZURE_COG_SERVICES_BASE_URL')
-        self.AZURE_COG_SERVICES_API_KEY = os.getenv('AZURE_COG_SERVICES_API_KEY')
-        self.AZURE_COG_SERVICES_RESOURCE_NAME = os.getenv('AZURE_COG_SERVICES_RESOURCE_NAME')
-        # aws variables
-        self.AWS_S3_TYPE = os.getenv('AWS_S3_TYPE')
-        self.AWS_S3_BUCKET_NAME = os.getenv('AWS_S3_BUCKET_NAME')
-        # format environment variables
-        self.format_config_vars()
+        # local variables
+        self.LOCAL_DATA_FOLDER = str(os.getenv('LOCAL_DATA_FOLDER'))
+        self.ENVIRONMENT = str(os.getenv('ENVIRONMENT'))
 
+        # AZURE variables
+
+        # cogntive services
+        self.AZURE_COG_SERVICES_RESOURCE_NAME = f"{str(os.getenv('AZURE_COG_SERVICES_RESOURCE_NAME'))}-{self.ENVIRONMENT}"
+        self.AZURE_COG_SERVICES_BASE_URL = str(os.getenv('AZURE_COG_SERVICES_BASE_URL'))
+        self.AZURE_COG_SERVICES_API_KEY = str(os.getenv('AZURE_COG_SERVICES_API_KEY'))
+        # storage account
+        self.AZURE_STORAGE_ACCOUNT_NAME = f"{str(os.getenv('AZURE_STORAGE_ACCOUNT_NAME'))}{self.ENVIRONMENT}"
+        self.AZURE_STORAGE_ACCOUNT_CONTAINER = str(os.getenv('AZURE_STORAGE_ACCOUNT_CONTAINER'))
+        self.AZURE_STORAGE_ACCOUNT_FOLDER_PATH = str(os.getenv('AZURE_STORAGE_ACCOUNT_FOLDER_PATH'))
+        self.AZURE_STORAGE_ACCOUNT_FILE_NAME = str(os.getenv('AZURE_STORAGE_ACCOUNT_FILE_NAME'))
+        self.AZURE_STORAGE_ACCOUNT_KEY = str(os.getenv('AZURE_STORAGE_ACCOUNT_KEY'))
+
+        # AWS variables
+        
+        # s3 stprage account
+        self.AWS_S3_REGION = str(os.getenv('AWS_S3_REGION'))
+        self.AWS_S3_BUCKET_TYPE = str(os.getenv('AWS_S3_BUCKET_TYPE'))
+        self.AWS_S3_BUCKET_NAME = f"{str(os.getenv('AWS_S3_BUCKET_NAME'))}-{self.ENVIRONMENT}"
+        self.AWS_S3_BUCKET_FOLDER_PATH = str(os.getenv('AWS_S3_BUCKET_FOLDER_PATH'))
+        self.AWS_S3_BUCKET_FILE_NAME = str(os.getenv('AWS_S3_BUCKET_FILE_NAME'))
+        self.AWS_S3_BUCKET_ACCESS_KEY_ID = str(os.getenv('AWS_S3_BUCKET_ACCESS_KEY_ID'))
+        self.AWS_S3_BUCKET_SECRET_KEY_ID = str(os.getenv('AWS_S3_BUCKET_SECRET_KEY_ID'))
+
+        # GCP variables
+
+        # format and print environment variables
+        self.format_config_vars()
+        
 
     def format_config_vars(self):
-        # format configuration variables
-        self.DATA_LOCATION = str(self.DATA_LOCATION)
-        self.AZURE_COG_SERVICES_BASE_URL = str(self.AZURE_COG_SERVICES_BASE_URL)
-        self.AZURE_COG_SERVICES_API_KEY = str(self.AZURE_COG_SERVICES_API_KEY)
-        self.AZURE_COG_SERVICES_RESOURCE_NAME = str(self.AZURE_COG_SERVICES_RESOURCE_NAME)
-        self.AWS_S3_TYPE = str(self.AWS_S3_TYPE)
-        self.AWS_S3_BUCKET_NAME = str(self.AWS_S3_BUCKET_NAME)
+        """
+        additional formatting for configuration variables
+        this function is optional if you need it
+        """
+        return None
 
 
     def get_config_vars(self):
