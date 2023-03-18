@@ -5,6 +5,7 @@ import boto3
 # from pandas_aws.s3 import get_df_from_keys
 from  helpers.generic_helpers import *
 
+
 # aws class (main-class)
 class awsclass:
 
@@ -58,9 +59,41 @@ class s3bucket(awsclass):
         return session.client(self.config["AWS_S3_BUCKET_TYPE"])
 
 
+    def create_s3_resource(self):
+        """create s3 resource"""
+        s3_resource = boto3.resource(
+            self.config["AWS_S3_BUCKET_TYPE"],
+            region_name = self.config["AWS_S3_REGION"],
+            aws_access_key_id = self.config["AWS_S3_BUCKET_ACCESS_KEY_ID"], 
+            aws_secret_access_key = self.config["AWS_S3_BUCKET_SECRET_KEY_ID"]   
+        )
+        return s3_resource
+
+
+    def create_s3_bucket(self):
+        """create s3 bucket"""
+        try:
+            self.create_s3_client().create_bucket(
+                Bucket = self.config["AWS_S3_BUCKET_NAME"],
+                CreateBucketConfiguration = {'LocationConstraint': self.config["AWS_S3_REGION"]}   
+            )
+            print(f'bucket created successfully: {self.config["AWS_S3_BUCKET_NAME"]}\n')
+        except: print(f'bucket already exists: {self.config["AWS_S3_BUCKET_NAME"]}\n')
+
+
+    def delete_s3_bucket(self):
+        """delete s3 bucket"""
+        try:
+            bucket = self.create_s3_resource().Bucket(self.config["AWS_S3_BUCKET_NAME"])
+            bucket.objects.all().delete()
+            bucket.delete()
+            print(f'bucket and all files deleted successfully: {self.config["AWS_S3_BUCKET_NAME"]}\n')
+        except: print(f'bucket cannot be deleted: {self.config["AWS_S3_BUCKET_NAME"]}\n')
+
+
     def get_s3_buckets_list(self):
         """fetch the list of existing S3 buckets"""
-        buckets = self.create_s3_client().list_buckets() 
+        buckets = self.create_s3_client().list_buckets()
         bucketlist = []
         for bucket in buckets["Buckets"]: bucketlist.append(bucket["Name"])
         return bucketlist
