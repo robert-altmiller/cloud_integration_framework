@@ -3,7 +3,7 @@ from helpers.generic_helpers import *
 
 
 # class_obj class is in --> azure_helpers.py
-def azure_text_analytics_api_test(textanalytics_obj = None):
+def azure_text_analytics_api_test(azure_ta_obj = None):
     # test azure cognitive services api functionality
     
     text_list = \
@@ -20,11 +20,11 @@ def azure_text_analytics_api_test(textanalytics_obj = None):
 
     all_results_list = []
     for text in text_list:
-        textanalytics_obj.set_text(text)
-        keyphrases = get_json_loads(textanalytics_obj.get_text_analytics("keyphrases"))
-        sentiment_score = get_json_loads(textanalytics_obj.get_text_analytics("sentiment_score"))
-        sentiment_confidence = get_json_loads(textanalytics_obj.get_text_analytics("sentiment_confidence"))
-        named_entities = get_json_loads(textanalytics_obj.get_text_analytics("named_entities"))
+        azure_ta_obj.set_text(text)
+        keyphrases = get_json_loads(azure_ta_obj.get_text_analytics("keyphrases"))
+        sentiment_score = get_json_loads(azure_ta_obj.get_text_analytics("sentiment_score"))
+        sentiment_confidence = get_json_loads(azure_ta_obj.get_text_analytics("sentiment_confidence"))
+        named_entities = get_json_loads(azure_ta_obj.get_text_analytics("named_entities"))
 
         json_structure = {
             "input_text": keyphrases[0]["input_text"],

@@ -1,2 +1,3 @@
-from .s3_bucket import *
-from .text_analytics import *
+from .aws_s3_bucket_test import *
+from .azure_auth_test import *
+from .azure_text_analytics_test import *

@@ -4,7 +4,7 @@ from azure.ai.textanalytics import TextAnalyticsClient
 from .azure_base import *
 
 
-# azure text analytics class functions (sub-class)
+# azure text analytics class functions (e.g. cognitive services)
 class textanalytics(azureclass):
 
     # class constructor    

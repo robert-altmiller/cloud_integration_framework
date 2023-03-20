@@ -6,3 +6,4 @@ mlflow
 azure-ai-textanalytics
 numpy
 boto3
+msal

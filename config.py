@@ -19,6 +19,15 @@ class Config:
 
         # AZURE variables
 
+        # azure environment
+        self.AZURE_TENANT_ID = str(os.getenv('AZURE_TENANT_ID'))
+        self.AZURE_SUBSCRIPTION_ID = str(os.getenv('AZURE_SUBSCRIPTION_ID'))
+        self.AZURE_RESOURCE_GROUP_NAME = str(os.getenv('AZURE_RESOURCE_GROUP_NAME'))
+        self.AZURE_CLIENT_ID = str(os.getenv('AZURE_CLIENT_ID'))
+        self.AZURE_CLIENT_SECRET = str(os.getenv('AZURE_CLIENT_SECRET'))
+        # authentication
+        self.AZURE_AUTHENTICATION_AUTHORITY = f"{str(os.getenv('AZURE_AUTHENTICATION_AUTHORITY'))}/{self.AZURE_TENANT_ID}"
+        self.AZURE_AUTHENTICATION_GRANT_SCOPE = [str(os.getenv('AZURE_AUTHENTICATION_GRANT_SCOPE'))] # must be list
         # cogntive services
         self.AZURE_COG_SERVICES_RESOURCE_NAME = f"{str(os.getenv('AZURE_COG_SERVICES_RESOURCE_NAME'))}-{self.ENVIRONMENT}"
         self.AZURE_COG_SERVICES_BASE_URL = str(os.getenv('AZURE_COG_SERVICES_BASE_URL'))
