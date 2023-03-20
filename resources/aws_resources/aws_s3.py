@@ -1,18 +1,8 @@
 
 # library and file imports
 import boto3
-# from pandas_aws import get_client
-# from pandas_aws.s3 import get_df_from_keys
-from  helpers.generic_helpers import *
+from .aws_base import *
 
-
-# aws class (main-class)
-class awsclass:
-
-    # class constructor    
-    def __init__(self, config):
-        # get all configuration variables
-        self.config = config
 
 
 # s3 class functions (sub-class)

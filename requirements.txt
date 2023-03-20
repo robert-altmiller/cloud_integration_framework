@@ -5,3 +5,4 @@ pyspark
 mlflow
 azure-ai-textanalytics
 numpy
+boto3

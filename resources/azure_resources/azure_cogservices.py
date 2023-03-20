@@ -1,16 +1,7 @@
 # library and file imports
 from azure.core.credentials import AzureKeyCredential
 from azure.ai.textanalytics import TextAnalyticsClient
-from  helpers.generic_helpers import *
-
-
-# azure class (main-class)
-class azureclass:
-
-    # class constructor    
-    def __init__(self, config):
-        # get all configuration variables
-        self.config = config
+from .azure_base import *
 
 
 # azure text analytics class functions (sub-class)
@@ -114,19 +105,3 @@ class textanalytics(azureclass):
                 entity_dict["entity_offset"] = entity.offset
                 entity_list.append(entity_dict)
             return get_json_dumps([{"input_text": self.text, "entities": entity_dict}])
-
-
-
-class azurestorageaccount(azureclass):
-    
-    # class constructor    
-    def __init__(self, config):
-        # get all configuration variables
-        self.filename = None
-        super().__init__(config)
-
-    def set_filename(self, filename):
-        """
-        set text value an format as list
-        """
-        self.filename = filename

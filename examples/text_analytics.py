@@ -1,5 +1,5 @@
 # library and file imports
-from helpers.main import *
+from helpers.generic_helpers import *
 
 
 # class_obj class is in --> azure_helpers.py

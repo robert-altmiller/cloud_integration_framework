@@ -1,6 +1,6 @@
 # library and file imports
-from examples.main import *
 from config import *
+from examples import *
 
 
 # environment variables initialization

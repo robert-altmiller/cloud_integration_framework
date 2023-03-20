@@ -1,7 +1,7 @@
 # library and file imports
 import os
 from dotenv import load_dotenv
-from helpers.main import *
+from resources import *
 
 
 # load .env environment file
