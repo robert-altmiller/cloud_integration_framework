@@ -7,3 +7,7 @@ azure-ai-textanalytics
 numpy
 boto3
 msal
+azure-storage-blob
+azure-identity
+azure-common
+msrestazure

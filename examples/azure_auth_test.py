@@ -2,7 +2,7 @@
 from helpers.generic_helpers import *
 
 
-# class_obj class is in --> azure_helpers.py
+# class_obj class is in --> resources --> azure_resources
 def azure_auth_api_test(azure_auth_obj = None):
     # test to create an oauth2 auth token
 

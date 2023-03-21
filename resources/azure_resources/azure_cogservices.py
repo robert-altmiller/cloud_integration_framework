@@ -5,7 +5,7 @@ from .azure_base import *
 
 
 # azure text analytics class functions (e.g. cognitive services)
-class textanalytics(azureclass):
+class azuretextanalytics(azureclass):
 
     # class constructor    
     def __init__(self, config):

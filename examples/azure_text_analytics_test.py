@@ -2,7 +2,7 @@
 from helpers.generic_helpers import *
 
 
-# class_obj class is in --> azure_helpers.py
+# class_obj class is in --> resources --> azure_resources
 def azure_text_analytics_api_test(azure_ta_obj = None):
     # test azure cognitive services api functionality
     

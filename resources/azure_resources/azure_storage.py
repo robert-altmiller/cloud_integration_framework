@@ -1,4 +1,7 @@
 # library and file imports
+import os, uuid
+from azure.identity import DefaultAzureCredential
+from azure.storage.blob import BlobServiceClient, BlobClient, ContainerClient
 from .azure_base import *
 
 
@@ -31,13 +34,52 @@ class azurestorageaccount(azureclass):
         """set a new azure storage account file name"""
         self.config["AZURE_STORAGE_ACCOUNT_FILE_NAME"] = az_storage_acct_filename
 
+    
+    def create_blob_service_client(self):
+        """create azure storage blob service client"""
+        return BlobServiceClient.from_connection_string(self.config["AZURE_STORAGE_ACCOUNT_CONN"])
 
-    # def create_azure_storage_account_client(self):
-    #     """create azure storage account client"""
-    #     s3_client = boto3.client(
-    #         self.config["AWS_S3_BUCKET_TYPE"],
-    #         aws_access_key_id = self.config["AWS_S3_BUCKET_ACCESS_KEY_ID"], 
-    #         aws_secret_access_key = self.config["AWS_S3_BUCKET_SECRET_KEY_ID"],
-    #         region_name = self.config["AWS_S3_REGION"]
-    #     )
-    #     return s3_client
+
+    def create_container_client(self):
+        """create azure storage account container client"""
+        return self.create_blob_service_client().get_container_client(self.config["AZURE_STORAGE_ACCOUNT_CONTAINER"])
+
+
+    def create_blob_client(self):
+        """create azure storage account blob client"""
+        return self.create_blob_service_client().get_blob_client(
+            container = self.config["AZURE_STORAGE_ACCOUNT_CONTAINER"],
+            blob = f'{self.config["AZURE_STORAGE_ACCOUNT_FOLDER_PATH"]}/{self.config["AZURE_STORAGE_ACCOUNT_FILE_NAME"]}'
+        )
+    
+    def create_container(self, containername = None):
+        """create azure storage account container"""
+        try:
+            self.create_blob_service_client().create_container(containername)
+            print(f"container {containername} created successfully...")
+        except: print(f"create container failed: container {containername} already exists...")
+
+
+    def delete_container(self, containername = None):
+        """delete azure storage account container"""
+        try:
+            self.create_blob_service_client().delete_container(containername)
+            print(f"container {containername} deleted successfully...")
+        except: print(f"delete container failed: container {containername} does not exist...")
+
+    def get_blob_list(self):
+        return self.create_container_client().list_blobs()
+
+
+    def upload_blob(self, blobpath):
+        """upload a blob to an azure storage account container"""
+        with open(blobpath, "rb") as data:
+           self.create_container_client().upload_blob(name="my_blob", data=data)
+
+
+    def delete_blob(self):
+        """delete blob from azure storage account"""
+        self.create_blob_client().delete_blob()
+
+
+

@@ -2,7 +2,7 @@
 from helpers.generic_helpers import *
 
 
-# class_obj class is in --> azure_helpers.py
+# class_obj class is in --> resources --> aws_resources
 def aws_s3_bucket_api_test(aws_s3_obj = None):
     # test aws s3 bucket api functionality
     

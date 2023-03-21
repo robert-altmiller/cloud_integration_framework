@@ -38,6 +38,7 @@ class Config:
         self.AZURE_STORAGE_ACCOUNT_FOLDER_PATH = str(os.getenv('AZURE_STORAGE_ACCOUNT_FOLDER_PATH'))
         self.AZURE_STORAGE_ACCOUNT_FILE_NAME = str(os.getenv('AZURE_STORAGE_ACCOUNT_FILE_NAME'))
         self.AZURE_STORAGE_ACCOUNT_KEY = str(os.getenv('AZURE_STORAGE_ACCOUNT_KEY'))
+        self.AZURE_STORAGE_ACCOUNT_CONN = f'DefaultEndpointsProtocol=https;AccountName={self.AZURE_STORAGE_ACCOUNT_NAME};AccountKey={self.AZURE_STORAGE_ACCOUNT_KEY};EndpointSuffix=core.windows.net'
 
         # AWS variables
         
