@@ -102,3 +102,15 @@ class awss3bucket(awsclass):
             Key = self.config["AWS_S3_BUCKET_FOLDER_PATH"] + self.config["AWS_S3_BUCKET_FILE_NAME"]
         )
         return read_file_with_pandas(s3_object["Body"], file_type)
+
+
+    def get_s3_bucket_list(self):
+        # get list of files in an s3 buckety
+        return None 
+
+
+    def download_s3_bucket(self, s3_bucketname, s3_folderpath, s3_filename):
+        """download s3 bucket maintain bucket folder structure locally"""
+        self.set_s3_bucket_name_override(s3_bucketname)
+        self.set_s3_bucket_folder_path_override(s3_folderpath)
+        self.set_s3_bucket_file_name_override(s3_filename)

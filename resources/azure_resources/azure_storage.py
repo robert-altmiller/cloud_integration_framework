@@ -85,7 +85,7 @@ class azurestorageaccount(azureclass):
 
 
     def download_blob(self, container = None, folderpath = None, filename = None):
-        """download azure storage container blob"""
+        """download azure storage container blob and maintain blob folder structure locally"""
         self.set_azure_storage_acct_container_name_override(container)
         self.set_azure_storage_acct_folder_path_override(folderpath)
         self.set_azure_storage_acct_file_name_override(filename)
