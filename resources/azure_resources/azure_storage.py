@@ -1,5 +1,5 @@
 # library and file imports
-import os, uuid
+import os, pathlib
 from azure.identity import DefaultAzureCredential
 from azure.storage.blob import BlobServiceClient, BlobClient, ContainerClient
 from .azure_base import *
@@ -67,14 +67,29 @@ class azurestorageaccount(azureclass):
             print(f"container {containername} deleted successfully...")
         except: print(f"delete container failed: container {containername} does not exist...")
 
+
     def get_blob_list(self):
+        """get list of blobs in azure storage account container"""
         return self.create_container_client().list_blobs()
+
+
+    def download_blob(self, container = None, filepath = None, filename = None):
+        """download azure storage container blob"""
+        self.set_azure_storage_acct_container_name_override(container)
+        self.set_azure_storage_acct_folder_path_override(filepath)
+        self.set_azure_storage_acct_file_name_override(filename)
+        localpath = f"./data/blobs/{container}/{filepath}/"
+        if not os.path.exists(localpath): os.makedirs(localpath)
+        with open(f"{localpath}/{filename}", "wb") as my_blob:
+            blob_data = self.create_blob_client().download_blob()
+            blob_data.readinto(my_blob)
+        print(f"{localpath}/{filename} written locally successfully")
 
 
     def upload_blob(self, blobpath):
         """upload a blob to an azure storage account container"""
         with open(blobpath, "rb") as data:
-           self.create_container_client().upload_blob(name="my_blob", data=data)
+           self.create_container_client().upload_blob(name="my_blob", data = data)
 
 
     def delete_blob(self):

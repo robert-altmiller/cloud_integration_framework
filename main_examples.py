@@ -63,4 +63,5 @@ def main():
         azure_storage_account_api_test(aws_azure_storage_obj)
 
 
-main()
+if __name__ == "__main__":
+    main()
