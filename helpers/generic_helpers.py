@@ -53,3 +53,10 @@ def read_file_with_pandas(filename = None, filetype = None):
     """read csv file using pandas"""
     if filetype.lower() == "csv":
         return pd.read_csv(filename)
+    
+
+def check_str_for_substr_and_replace(inputstr = None, substr = None):
+    """remove a substring from a string input"""
+    if substr in inputstr:
+        return inputstr.replace(substr, '')
+    else: return inputstr

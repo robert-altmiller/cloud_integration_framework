@@ -47,7 +47,7 @@ def main():
     # s3 bucket integration
     # s3bucket class is in resources --> aws_resources
     if run_test("aws_s3bucket") == True:
-        aws_s3_obj = s3bucket(config)
+        aws_s3_obj = awss3bucket(config)
         aws_s3_bucket_api_test(aws_s3_obj)
 
     
@@ -57,7 +57,9 @@ def main():
         azure_auth_obj = azureauth(config)
         azure_auth_api_test(azure_auth_obj)
 
+
     # azure storage account integration
+    # azurestorageaccount class is in resources --> azure_resources
     if run_test("azure_storage") == True:
         aws_azure_storage_obj = azurestorageaccount(config)
         azure_storage_account_api_test(aws_azure_storage_obj)

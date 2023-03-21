@@ -6,7 +6,7 @@ from .aws_base import *
 
 
 # s3 class functions (sub-class)
-class s3bucket(awsclass):
+class awss3bucket(awsclass):
 
     # class constructor    
     def __init__(self, config):

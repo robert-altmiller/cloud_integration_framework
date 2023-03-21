@@ -49,7 +49,7 @@ class azurestorageaccount(azureclass):
         """create azure storage account blob client"""
         return self.create_blob_service_client().get_blob_client(
             container = self.config["AZURE_STORAGE_ACCOUNT_CONTAINER"],
-            blob = f'{self.config["AZURE_STORAGE_ACCOUNT_FOLDER_PATH"]}/{self.config["AZURE_STORAGE_ACCOUNT_FILE_NAME"]}'
+            blob = check_str_for_substr_and_replace(f'{self.config["AZURE_STORAGE_ACCOUNT_FOLDER_PATH"]}/{self.config["AZURE_STORAGE_ACCOUNT_FILE_NAME"]}', "//")
         )
     
     def create_container(self, containername = None):
@@ -73,19 +73,6 @@ class azurestorageaccount(azureclass):
         return self.create_container_client().list_blobs()
 
 
-    def download_blob(self, container = None, filepath = None, filename = None):
-        """download azure storage container blob"""
-        self.set_azure_storage_acct_container_name_override(container)
-        self.set_azure_storage_acct_folder_path_override(filepath)
-        self.set_azure_storage_acct_file_name_override(filename)
-        localpath = f"./data/blobs/{container}/{filepath}/"
-        if not os.path.exists(localpath): os.makedirs(localpath)
-        with open(f"{localpath}/{filename}", "wb") as my_blob:
-            blob_data = self.create_blob_client().download_blob()
-            blob_data.readinto(my_blob)
-        print(f"{localpath}/{filename} written locally successfully")
-
-
     def upload_blob(self, blobpath):
         """upload a blob to an azure storage account container"""
         with open(blobpath, "rb") as data:
@@ -95,6 +82,21 @@ class azurestorageaccount(azureclass):
     def delete_blob(self):
         """delete blob from azure storage account"""
         self.create_blob_client().delete_blob()
+
+
+    def download_blob(self, container = None, folderpath = None, filename = None):
+        """download azure storage container blob"""
+        self.set_azure_storage_acct_container_name_override(container)
+        self.set_azure_storage_acct_folder_path_override(folderpath)
+        self.set_azure_storage_acct_file_name_override(filename)
+        localpath = check_str_for_substr_and_replace(f"./data/azureblobs/{container}/{folderpath}", "//")
+        if not os.path.exists(localpath): os.makedirs(localpath)
+        with open(f"{localpath}/{filename}", "wb") as my_blob:
+            blob_data = self.create_blob_client().download_blob()
+            blob_data.readinto(my_blob)
+        print(f"{localpath}/{filename} written locally successfully")
+
+
 
 
 
