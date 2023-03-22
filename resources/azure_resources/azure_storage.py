@@ -45,11 +45,16 @@ class azurestorageaccount(azureclass):
         return self.create_blob_service_client().get_container_client(self.config["AZURE_STORAGE_ACCOUNT_CONTAINER"])
 
 
+    def get_blob_file_path(self):
+        """get blob file path for download from azure storage account container"""
+        return f'{self.config["AZURE_STORAGE_ACCOUNT_FOLDER_PATH"]}/{self.config["AZURE_STORAGE_ACCOUNT_FILE_NAME"]}'
+
+
     def create_blob_client(self):
         """create azure storage account blob client"""
         return self.create_blob_service_client().get_blob_client(
             container = self.config["AZURE_STORAGE_ACCOUNT_CONTAINER"],
-            blob = check_str_for_substr_and_replace(f'{self.config["AZURE_STORAGE_ACCOUNT_FOLDER_PATH"]}/{self.config["AZURE_STORAGE_ACCOUNT_FILE_NAME"]}', "//")
+            blob = check_str_for_substr_and_replace(self.get_blob_file_path(), "//")
         )
     
     def create_container(self, containername = None):
@@ -84,15 +89,21 @@ class azurestorageaccount(azureclass):
         self.create_blob_client().delete_blob()
 
 
-    def download_blob(self, container = None, folderpath = None, filename = None):
+    def download_blob(self):
+        """download a blob from azure storage account container"""
+        return self.create_blob_client().download_blob()
+
+
+    def download_blob_write_locally(self, storageacctname = None, container = None, folderpath = None, filename = None):
         """download azure storage container blob and maintain blob folder structure locally"""
+        self.set_azure_storage_acct_name_override(storageacctname)
         self.set_azure_storage_acct_container_name_override(container)
         self.set_azure_storage_acct_folder_path_override(folderpath)
         self.set_azure_storage_acct_file_name_override(filename)
-        localpath = check_str_for_substr_and_replace(f"./data/azureblobs/{container}/{folderpath}", "//")
+        localpath = check_str_for_substr_and_replace(f'./{self.config["LOCAL_DATA_FOLDER"]}/azurestorage/{storageacctname}/{container}/{folderpath}', "//")
         if not os.path.exists(localpath): os.makedirs(localpath)
         with open(f"{localpath}/{filename}", "wb") as my_blob:
-            blob_data = self.create_blob_client().download_blob()
+            blob_data = self.download_blob()
             blob_data.readinto(my_blob)
         print(f"{localpath}/{filename} written locally successfully")
 

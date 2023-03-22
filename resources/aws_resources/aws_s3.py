@@ -89,10 +89,24 @@ class awss3bucket(awsclass):
         return bucketlist
 
 
-    def get_s3_bucket_files_list(self):
-        """list s3 bucket files"""
+    def get_s3_bucket_objects_list(self):
+        """list s3 bucket objects"""
         s3_session = self.create_s3_session()
         return s3_session.list_objects(Bucket = self.config["AWS_S3_BUCKET_NAME"])["Contents"]
+
+
+    def get_s3_bucket_files_folders_paths(self, return_type = "file_paths"):
+        """
+        get s3 bucket file or folder paths
+        return_type = "file_paths" or "folder_paths"
+        default return type is file_paths
+        """
+        files_folders_list = [file["Key"] for file in self.get_s3_bucket_objects_list()]
+        resultsdict = {
+            "file_paths": [file for file in files_folders_list if '/' not in file[-1]],
+            "folder_paths": [file for file in files_folders_list if '/' in file[-1]]
+        }
+        return resultsdict[return_type]
 
 
     def read_s3_bucket_file(self, file_type = None):
@@ -104,13 +118,30 @@ class awss3bucket(awsclass):
         return read_file_with_pandas(s3_object["Body"], file_type)
 
 
-    def get_s3_bucket_list(self):
-        # get list of files in an s3 buckety
-        return None 
+    def gets3_file_path(self):
+        """get s3 file path for download from s3 bucket"""
+        return f'{self.config["AWS_S3_BUCKET_FOLDER_PATH"]}/{self.config["AWS_S3_BUCKET_FILE_NAME"]}'
 
 
-    def download_s3_bucket(self, s3_bucketname, s3_folderpath, s3_filename):
-        """download s3 bucket maintain bucket folder structure locally"""
-        self.set_s3_bucket_name_override(s3_bucketname)
-        self.set_s3_bucket_folder_path_override(s3_folderpath)
-        self.set_s3_bucket_file_name_override(s3_filename)
+    def download_s3_file(self, localfilepath = None):
+        """download s3 bucket file"""
+        s3_file_path = check_str_for_substr_and_replace(self.gets3_file_path(), "//")
+        print(s3_file_path)
+        print(localfilepath)
+        self.create_s3_resource().Bucket(self.config["AWS_S3_BUCKET_NAME"]).download_file(s3_file_path, localfilepath)
+
+
+    def download_s3_bucket_file_write_locally(self, bucket = None, folderpath = None, filename = None):
+        """download s3 bucket file maintain s3 bucket folder structure locally"""
+        self.set_s3_bucket_name_override(bucket)
+        self.set_s3_bucket_folder_path_override(folderpath)
+        self.set_s3_bucket_file_name_override(filename)
+        localpath = check_str_for_substr_and_replace(f'./{self.config["LOCAL_DATA_FOLDER"]}/s3bucket/{bucket}/{folderpath}', "//")
+        if not os.path.exists(localpath): os.makedirs(localpath)
+        with open(f"{localpath}/{filename}", "wb") as my_s3_file:
+            self.download_s3_file(f"{localpath}/{filename}")   
+        print(f"{localpath}/{filename} written locally successfully")
+
+
+
+

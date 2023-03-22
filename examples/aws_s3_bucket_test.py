@@ -11,9 +11,11 @@ def aws_s3_bucket_api_test(aws_s3_obj = None):
     aws_s3_obj.create_s3_bucket()
     aws_s3_obj.delete_s3_bucket()
 
+
     # print all the s3 buckets
     buckets = aws_s3_obj.get_s3_buckets_list()
     print(f"buckets: {buckets}")
+
 
     # read a file with filename override (e.e. red wine quality)
     aws_s3_obj.set_s3_bucket_name_override("ra-aws-bucket-dev") # optional
@@ -22,11 +24,21 @@ def aws_s3_bucket_api_test(aws_s3_obj = None):
     df = aws_s3_obj.read_s3_bucket_file("csv")
     print(df)
 
+
     # get a list of all the files and folders in an s3 bucket and create two lists: 
     # one for file paths and the other for folder paths
     aws_s3_obj.set_s3_bucket_name_override("ra-aws-bucket-dev")
-    files_folders_list = [file["Key"] for file in aws_s3_obj.get_s3_bucket_files_list()]
-    file_paths = [file for file in files_folders_list if '/' not in file[-1]]
+    file_paths = aws_s3_obj.get_s3_bucket_files_folders_paths(return_type = "file_paths")
     print(f"file_paths: {file_paths}")
-    folder_paths = [file for file in files_folders_list if '/' in file[-1]]
+    folder_paths = aws_s3_obj.get_s3_bucket_files_folders_paths(return_type = "folder_paths")
     print(f"folder_paths: {folder_paths}")
+
+
+    # download all the s3 files locally under the data folder while maintaining s3 folder structure in s3 bucket
+    # this function can run locally on a scaled virtual machine hosted in a kubernetes container 
+    bucket = "ra-aws-bucket-dev"
+    for filepath in file_paths:
+        folderpath = filepath.rsplit('/', 1)[0] # s3 file folderpath
+        filename = filepath.split("/")[-1] # s3 file filename
+        if folderpath == filename: folderpath = "/"
+        aws_s3_obj.download_s3_bucket_file_write_locally(bucket, folderpath, filename)
