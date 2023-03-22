@@ -61,16 +61,16 @@ class azurestorageaccount(azureclass):
         """create azure storage account container"""
         try:
             self.create_blob_service_client().create_container(containername)
-            print(f"container {containername} created successfully...")
-        except: print(f"create container failed: container {containername} already exists...")
+            print(f"azure storage account container created successfully: {containername}\n")
+        except: print(f"create azure storage account container failed: container {containername} already exists...\n")
 
 
     def delete_container(self, containername = None):
         """delete azure storage account container"""
         try:
             self.create_blob_service_client().delete_container(containername)
-            print(f"container {containername} deleted successfully...")
-        except: print(f"delete container failed: container {containername} does not exist...")
+            print(f"azure storage account container and all files deleted successfully: {containername}\n")
+        except: print(f"delete azure storage account container and all files failed: container {containername} does not exist...\n")
 
 
     def get_blob_list(self):
@@ -105,7 +105,7 @@ class azurestorageaccount(azureclass):
         with open(f"{localpath}/{filename}", "wb") as my_blob:
             blob_data = self.download_blob()
             blob_data.readinto(my_blob)
-        print(f"{localpath}/{filename} written locally successfully")
+        print(f"{localpath}/{filename} written locally successfully....")
 
 
 

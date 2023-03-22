@@ -67,8 +67,8 @@ class awss3bucket(awsclass):
                 Bucket = self.config["AWS_S3_BUCKET_NAME"],
                 CreateBucketConfiguration = {'LocationConstraint': self.config["AWS_S3_REGION"]}   
             )
-            print(f'bucket created successfully: {self.config["AWS_S3_BUCKET_NAME"]}\n')
-        except: print(f'bucket already exists: {self.config["AWS_S3_BUCKET_NAME"]}\n')
+            print(f'aws s3 bucket created successfully: {self.config["AWS_S3_BUCKET_NAME"]}\n')
+        except: print(f'aws s3 bucket already exists: {self.config["AWS_S3_BUCKET_NAME"]}\n')
 
 
     def delete_s3_bucket(self):
@@ -77,8 +77,8 @@ class awss3bucket(awsclass):
             bucket = self.create_s3_resource().Bucket(self.config["AWS_S3_BUCKET_NAME"])
             bucket.objects.all().delete()
             bucket.delete()
-            print(f'bucket and all files deleted successfully: {self.config["AWS_S3_BUCKET_NAME"]}\n')
-        except: print(f'bucket cannot be deleted: {self.config["AWS_S3_BUCKET_NAME"]}\n')
+            print(f'aws s3 bucket and all files deleted successfully: {self.config["AWS_S3_BUCKET_NAME"]}\n')
+        except: print(f'aws s3 bucket cannot be deleted: {self.config["AWS_S3_BUCKET_NAME"]}\n')
 
 
     def get_s3_buckets_list(self):
@@ -126,8 +126,6 @@ class awss3bucket(awsclass):
     def download_s3_file(self, localfilepath = None):
         """download s3 bucket file"""
         s3_file_path = check_str_for_substr_and_replace(self.gets3_file_path(), "//")
-        print(s3_file_path)
-        print(localfilepath)
         self.create_s3_resource().Bucket(self.config["AWS_S3_BUCKET_NAME"]).download_file(s3_file_path, localfilepath)
 
 
@@ -140,7 +138,7 @@ class awss3bucket(awsclass):
         if not os.path.exists(localpath): os.makedirs(localpath)
         with open(f"{localpath}/{filename}", "wb") as my_s3_file:
             self.download_s3_file(f"{localpath}/{filename}")   
-        print(f"{localpath}/{filename} written locally successfully")
+        print(f"{localpath}/{filename} written locally successfully....")
 
 
 

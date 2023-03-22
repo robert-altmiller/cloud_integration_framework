@@ -14,7 +14,7 @@ def aws_s3_bucket_api_test(aws_s3_obj = None):
 
     # print all the s3 buckets
     buckets = aws_s3_obj.get_s3_buckets_list()
-    print(f"buckets: {buckets}")
+    print(f"all s3 buckets listed: {buckets}\n")
 
 
     # read a file with filename override (e.e. red wine quality)
@@ -22,23 +22,28 @@ def aws_s3_bucket_api_test(aws_s3_obj = None):
     aws_s3_obj.set_s3_bucket_folder_path_override("Bronze/kaggle_datasets/red_wine_quality_dataset/") #optional
     aws_s3_obj.set_s3_bucket_file_name_override("winequality-red.csv") # optional
     df = aws_s3_obj.read_s3_bucket_file("csv")
+    print("read a file with filename override (e.e. red wine quality):")
     print(df)
+    print("\n")
 
 
     # get a list of all the files and folders in an s3 bucket and create two lists: 
     # one for file paths and the other for folder paths
     aws_s3_obj.set_s3_bucket_name_override("ra-aws-bucket-dev")
     file_paths = aws_s3_obj.get_s3_bucket_files_folders_paths(return_type = "file_paths")
-    print(f"file_paths: {file_paths}")
+    print("all file and folder paths:")
+    print(f"all file_paths: {file_paths}")
     folder_paths = aws_s3_obj.get_s3_bucket_files_folders_paths(return_type = "folder_paths")
-    print(f"folder_paths: {folder_paths}")
+    print(f"all folder_paths: {folder_paths}\n")
 
 
     # download all the s3 files locally under the data folder while maintaining s3 folder structure in s3 bucket
     # this function can run locally on a scaled virtual machine hosted in a kubernetes container 
+    print("downloads s3 bucket files locally:")
     bucket = "ra-aws-bucket-dev"
     for filepath in file_paths:
         folderpath = filepath.rsplit('/', 1)[0] # s3 file folderpath
         filename = filepath.split("/")[-1] # s3 file filename
         if folderpath == filename: folderpath = "/"
         aws_s3_obj.download_s3_bucket_file_write_locally(bucket, folderpath, filename)
+    print("\n")

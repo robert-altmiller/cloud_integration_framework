@@ -15,6 +15,7 @@ def azure_storage_account_api_test(azure_storage_account_obj = None):
     # get list of all blobs in container (format: container/filepath/filename)
     # and download all the blobs locally under the data folder while maintaining blob folder structure in container
     # this function can run locally on a scaled virtual machine hosted in a kubernetes container 
+    print("downloads azure storage account blobs locally:")
     storageacctname = "rastorageaccount"
     globalcontainers = ["bronze", "silver", "gold"] # a list of all the containers to download from
     for globalcontainer in globalcontainers:
@@ -28,5 +29,6 @@ def azure_storage_account_api_test(azure_storage_account_obj = None):
             filename = blob.name.split("/")[-1] # blob filename
             if folderpath == filename: folderpath = "/"
             azure_storage_account_obj.download_blob_write_locally(storageacctname, container, folderpath, filename)
+    print("\n")
 
 

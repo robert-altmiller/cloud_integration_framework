@@ -8,4 +8,4 @@ def azure_auth_api_test(azure_auth_obj = None):
 
     # get azure oauth2 token and print it
     oauth2token = azure_auth_obj.get_oauth2_token()
-    print(f"azure oauth2 token: {oauth2token}")
+    print(f"azure oauth2 token: {oauth2token}\n")
