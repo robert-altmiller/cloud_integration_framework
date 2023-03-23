@@ -18,17 +18,23 @@ def azure_storage_account_api_test(azure_storage_account_obj = None):
     print("downloads azure storage account blobs locally:")
     storageacctname = "rastorageaccount"
     globalcontainers = ["bronze", "silver", "gold"] # a list of all the containers to download from
+    azstoragelocalfilepaths = []
     for globalcontainer in globalcontainers:
         azure_storage_account_obj.set_azure_storage_acct_container_name_override(globalcontainer)
         blobs = azure_storage_account_obj.get_blob_list()
         filepaths = []
         for blob in blobs:
-            filepaths.append(f"{blob.container}/{blob.name}")
+            # filepaths.append(f"{blob.container}/{blob.name}")
             container = blob.container # container
             folderpath = blob.name.rsplit('/', 1)[0] # blob folderpath
             filename = blob.name.split("/")[-1] # blob filename
             if folderpath == filename: folderpath = "/"
-            azure_storage_account_obj.download_blob_write_locally(storageacctname, container, folderpath, filename)
+            azstoragelocalfilepath = azure_storage_account_obj.download_blob_write_locally(storageacctname, container, folderpath, filename)
+            azstoragelocalfilepaths.append(azstoragelocalfilepath)
     print("\n")
 
 
+    # upload local files to azure storage account container while maintaining the local folder stucture
+    print("uploading local files to azure storage account container:")
+    for azstoragefilepath in azstoragelocalfilepaths:
+        print(azstoragefilepath)

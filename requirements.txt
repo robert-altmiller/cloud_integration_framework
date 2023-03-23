@@ -11,3 +11,5 @@ azure-storage-blob
 azure-identity
 azure-common
 msrestazure
+functools
+requests

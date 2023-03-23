@@ -43,8 +43,8 @@ class awss3bucket(awsclass):
     def create_s3_session(self):
         """create s3 session"""
         session = boto3.Session(
-            aws_access_key_id = self.config["AWS_S3_BUCKET_ACCESS_KEY_ID"], 
-            aws_secret_access_key = self.config["AWS_S3_BUCKET_SECRET_KEY_ID"]
+            aws_access_key_id = self.config["AWS_GLOBAL_USER_ID"], 
+            aws_secret_access_key = self.config["AWS_GLOBAL_USER_KEY"]
         )
         return session.client(self.config["AWS_S3_BUCKET_TYPE"])
 
@@ -54,8 +54,8 @@ class awss3bucket(awsclass):
         s3_resource = boto3.resource(
             self.config["AWS_S3_BUCKET_TYPE"],
             region_name = self.config["AWS_S3_REGION"],
-            aws_access_key_id = self.config["AWS_S3_BUCKET_ACCESS_KEY_ID"], 
-            aws_secret_access_key = self.config["AWS_S3_BUCKET_SECRET_KEY_ID"]   
+            aws_access_key_id = self.config["AWS_GLOBAL_USER_ID"], 
+            aws_secret_access_key = self.config["AWS_GLOBAL_USER_KEY"]   
         )
         return s3_resource
 
@@ -130,16 +130,24 @@ class awss3bucket(awsclass):
 
 
     def download_s3_bucket_file_write_locally(self, bucket = None, folderpath = None, filename = None):
-        """download s3 bucket file maintain s3 bucket folder structure locally"""
+        """
+        download s3 bucket file maintain s3 bucket folder structure locally
+        return local file path each time this function is called
+        """
         self.set_s3_bucket_name_override(bucket)
         self.set_s3_bucket_folder_path_override(folderpath)
         self.set_s3_bucket_file_name_override(filename)
         localpath = check_str_for_substr_and_replace(f'./{self.config["LOCAL_DATA_FOLDER"]}/s3bucket/{bucket}/{folderpath}', "//")
         if not os.path.exists(localpath): os.makedirs(localpath)
-        with open(f"{localpath}/{filename}", "wb") as my_s3_file:
-            self.download_s3_file(f"{localpath}/{filename}")   
-        print(f"{localpath}/{filename} written locally successfully....")
+        localfilepath = f"{localpath}/{filename}" 
+        with open(localfilepath, "wb") as my_s3_file:
+            self.download_s3_file(localfilepath)   
+        print(f"{localfilepath} written locally successfully....")
+        return localfilepath
 
 
-
-
+    def upload_s3_bucket_file(self, bucket = None, localfilepath = None, s3bucketfilepath = None):
+        """upload local file to s3 bucket and maintain local folder structure"""
+        self.set_s3_bucket_name_override(bucket)
+        self.create_s3_resource().Bucket(bucket).upload_file(localfilepath, s3bucketfilepath)
+        print(f"{localfilepath} uploaded to s3 bucket: {s3bucketfilepath} successfully....\n")

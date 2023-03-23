@@ -17,7 +17,7 @@ class Config:
         self.LOCAL_DATA_FOLDER = str(os.getenv('LOCAL_DATA_FOLDER'))
         self.ENVIRONMENT = str(os.getenv('ENVIRONMENT'))
 
-        # AZURE variables
+        # AZURE VARIABLES
 
         # azure environment
         self.AZURE_TENANT_ID = str(os.getenv('AZURE_TENANT_ID'))
@@ -25,13 +25,16 @@ class Config:
         self.AZURE_RESOURCE_GROUP_NAME = str(os.getenv('AZURE_RESOURCE_GROUP_NAME'))
         self.AZURE_CLIENT_ID = str(os.getenv('AZURE_CLIENT_ID'))
         self.AZURE_CLIENT_SECRET = str(os.getenv('AZURE_CLIENT_SECRET'))
+
         # authentication
         self.AZURE_AUTHENTICATION_AUTHORITY = f"{str(os.getenv('AZURE_AUTHENTICATION_AUTHORITY'))}/{self.AZURE_TENANT_ID}"
         self.AZURE_AUTHENTICATION_GRANT_SCOPE = [str(os.getenv('AZURE_AUTHENTICATION_GRANT_SCOPE'))] # must be list
+        
         # cogntive services
         self.AZURE_COG_SERVICES_RESOURCE_NAME = f"{str(os.getenv('AZURE_COG_SERVICES_RESOURCE_NAME'))}-{self.ENVIRONMENT}"
         self.AZURE_COG_SERVICES_BASE_URL = str(os.getenv('AZURE_COG_SERVICES_BASE_URL'))
         self.AZURE_COG_SERVICES_API_KEY = str(os.getenv('AZURE_COG_SERVICES_API_KEY'))
+        
         # storage account
         self.AZURE_STORAGE_ACCOUNT_NAME = f"{str(os.getenv('AZURE_STORAGE_ACCOUNT_NAME'))}{self.ENVIRONMENT}"
         self.AZURE_STORAGE_ACCOUNT_CONTAINER = str(os.getenv('AZURE_STORAGE_ACCOUNT_CONTAINER'))
@@ -40,8 +43,14 @@ class Config:
         self.AZURE_STORAGE_ACCOUNT_KEY = str(os.getenv('AZURE_STORAGE_ACCOUNT_KEY'))
         self.AZURE_STORAGE_ACCOUNT_CONN = f'DefaultEndpointsProtocol=https;AccountName={self.AZURE_STORAGE_ACCOUNT_NAME};AccountKey={self.AZURE_STORAGE_ACCOUNT_KEY};EndpointSuffix=core.windows.net'
 
-        # AWS variables
+        # AWS VARIABLES
         
+        # aws environment
+
+        self.AWS_GLOBAL_REGION = str(os.getenv('AWS_GLOBAL_REGION'))
+        self.AWS_GLOBAL_USER_ID = str(os.getenv('AWS_GLOBAL_USER_ID'))
+        self.AWS_GLOBAL_USER_KEY = str(os.getenv('AWS_GLOBAL_USER_KEY'))
+
         # s3 stprage account
         self.AWS_S3_REGION = str(os.getenv('AWS_S3_REGION'))
         self.AWS_S3_BUCKET_TYPE = str(os.getenv('AWS_S3_BUCKET_TYPE'))

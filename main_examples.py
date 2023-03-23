@@ -13,9 +13,9 @@ config = config.get_config_vars()
 def run_test(cloudservicename = None):
     """has a list of the api tests to run"""
     runtests = {
-        "azure_auth": True,
-        "azure_storage": True,
-        "azure_textanalytics": True,
+        "azure_auth": False,
+        "azure_storage": False,
+        "azure_textanalytics": False,
         "aws_s3bucket": True,
         "aws_lamda": False,
         "gcp_bigquery": False

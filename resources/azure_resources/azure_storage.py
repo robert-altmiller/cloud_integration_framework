@@ -95,17 +95,22 @@ class azurestorageaccount(azureclass):
 
 
     def download_blob_write_locally(self, storageacctname = None, container = None, folderpath = None, filename = None):
-        """download azure storage container blob and maintain blob folder structure locally"""
+        """
+        download azure storage container blob and maintain blob folder structure locally
+        return local file path each time this function is called
+        """
         self.set_azure_storage_acct_name_override(storageacctname)
         self.set_azure_storage_acct_container_name_override(container)
         self.set_azure_storage_acct_folder_path_override(folderpath)
         self.set_azure_storage_acct_file_name_override(filename)
         localpath = check_str_for_substr_and_replace(f'./{self.config["LOCAL_DATA_FOLDER"]}/azurestorage/{storageacctname}/{container}/{folderpath}', "//")
         if not os.path.exists(localpath): os.makedirs(localpath)
-        with open(f"{localpath}/{filename}", "wb") as my_blob:
+        localfilepath = f"{localpath}/{filename}"
+        with open(localfilepath, "wb") as my_blob:
             blob_data = self.download_blob()
             blob_data.readinto(my_blob)
-        print(f"{localpath}/{filename} written locally successfully....")
+        print(f"{localfilepath} written locally successfully....")
+        return localfilepath
 
 
 
