@@ -57,7 +57,7 @@ def aws_s3_bucket_api_test(aws_s3_obj = None):
     tobucket = "ra-bucket-migrate"
     for s3localfilepath in s3localfilepaths:
         s3bucketfilepath = s3localfilepath.split(frombucket)[1].strip("/")
-        aws_s3_obj.upload_s3_bucket_file(tobucket, s3localfilepath, s3bucketfilepath)
+        aws_s3_obj.upload_s3_bucket_file_from_local(tobucket, s3localfilepath, s3bucketfilepath)
         # cleanup local s3 files
         delete_local_file(s3localfilepath)
     # clean up local s3 directories

@@ -14,9 +14,9 @@ def run_test(cloudservicename = None):
     """has a list of the api tests to run"""
     runtests = {
         "azure_auth": False,
-        "azure_storage": True,
+        "azure_storage": False,
         "azure_textanalytics": False,
-        "aws_s3bucket": False,
+        "aws_s3bucket": True,
         "aws_lamda": False,
         "gcp_bigquery": False
     }
@@ -70,7 +70,6 @@ def main():
         print("STARTING TEST FOR AZURE STORAGE ACCOUNT....\n\n")
         azure_storage_account_api_test(aws_azure_storage_obj)
         print("FINISHED TEST FOR AZURE STORAGE ACCOUNT....\n\n")
-
 
 
 if __name__ == "__main__":

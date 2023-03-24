@@ -41,7 +41,7 @@ def azure_storage_account_api_test(azure_storage_account_obj = None):
         blobfilepath1 = azstoragelocalfilepath.split(storageacctname)[1].strip("/")
         container = blobfilepath1.split("/")[0]
         blobfilepath2 = blobfilepath1.split(container)[1].strip("/")
-        azure_storage_account_obj.upload_blob_bucket_file(storageacctname, container, azstoragelocalfilepath, blobfilepath2, True)
+        azure_storage_account_obj.upload_blob_from_local(storageacctname, container, azstoragelocalfilepath, blobfilepath2, True)
         # cleanup local azure storage account blob files
         delete_local_file(azstoragelocalfilepath)
     # clean up local azure storage account directories

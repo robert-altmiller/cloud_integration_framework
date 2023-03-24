@@ -109,15 +109,17 @@ class azurestorageaccount(azureclass):
         with open(localfilepath, "wb") as my_blob:
             blob_data = self.download_blob()
             blob_data.readinto(my_blob)
-        print(f"{localfilepath} written locally successfully....")
+        print(f"{localfilepath} written locally successfully....\n")
         return localfilepath
 
 
 
-    def upload_blob_bucket_file(self, storageacctname = None, container = None, localfilepath = None, blobfilepath = None, overwrite = False):
+    def upload_blob_from_local(self, storageacctname = None, container = None, localfilepath = None, blobfilepath = None, overwrite = False):
         """upload local file to azure storage account container and maintain local folder structure"""
         self.set_azure_storage_acct_name_override(storageacctname)
         self.set_azure_storage_acct_container_name_override(container)
+        # ensure the container exists in the azure storage account
+        self.create_container(container)
         self.upload_blob(localfilepath, blobfilepath, overwrite)
-        print(f"{localfilepath} uploaded to azure storage account {storageacctname}: {blobfilepath} successfully....")
+        print(f"{localfilepath} uploaded to azure storage account {storageacctname}: {blobfilepath} successfully....\n")
 

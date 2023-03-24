@@ -147,12 +147,12 @@ class awss3bucket(awsclass):
         localfilepath = f"{localpath}/{filename}" 
         with open(localfilepath, "wb") as my_s3_file:
             self.download_s3_file(localfilepath)   
-        print(f"{localfilepath} written locally successfully....")
+        print(f"{localfilepath} written locally successfully....\n")
         return localfilepath
 
 
-    def upload_s3_bucket_file(self, bucket = None, localfilepath = None, s3filepath = None):
+    def upload_s3_bucket_file_from_local(self, bucket = None, localfilepath = None, s3filepath = None):
         """upload local file to s3 bucket and maintain local folder structure"""
         self.set_s3_bucket_name_override(bucket)
-        self.uplaod_s3_file(localfilepath, s3filepath)
-        print(f"{localfilepath} uploaded to s3 bucket {bucket}: {s3filepath} successfully....")
+        self.upload_s3_file(localfilepath, s3filepath)
+        print(f"{localfilepath} uploaded to s3 bucket {bucket}: {s3filepath} successfully....\n")
