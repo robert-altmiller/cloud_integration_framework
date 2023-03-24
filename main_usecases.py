@@ -51,9 +51,8 @@ def main():
 
         migrationconfig = {
             # a list of all the containers to download from a single azure storage account
-            "s3bucketname": "",
+            "s3bucketname": "ra-aws-bucket-dev",
             "azglobalcontainers": ["bronze", "silver", "gold"],
-            "awstobucket": "ra-aws-bucket-dev"
         }
 
         az_azure_storage_obj = azurestorageaccount(config)
