@@ -36,5 +36,14 @@ def azure_storage_account_api_test(azure_storage_account_obj = None):
 
     # upload local files to azure storage account container while maintaining the local folder stucture
     print("uploading local files to azure storage account container:")
-    for azstoragefilepath in azstoragelocalfilepaths:
-        print(azstoragefilepath)
+    storageacctname = "rastorageaccount"
+    for azstoragelocalfilepath in azstoragelocalfilepaths:
+        blobfilepath1 = azstoragelocalfilepath.split(storageacctname)[1].strip("/")
+        container = blobfilepath1.split("/")[0]
+        blobfilepath2 = blobfilepath1.split(container)[1].strip("/")
+        azure_storage_account_obj.upload_blob_bucket_file(storageacctname, container, azstoragelocalfilepath, blobfilepath2, True)
+        # cleanup local azure storage account blob files
+        delete_local_file(azstoragelocalfilepath)
+    # clean up local azure storage account directories
+    delete_local_dirs(f'{azure_storage_account_obj.config["LOCAL_DATA_FOLDER"]}/azurestorage/{storageacctname}')
+    print("\n")

@@ -14,9 +14,9 @@ def run_test(cloudservicename = None):
     """has a list of the api tests to run"""
     runtests = {
         "azure_auth": False,
-        "azure_storage": False,
+        "azure_storage": True,
         "azure_textanalytics": False,
-        "aws_s3bucket": True,
+        "aws_s3bucket": False,
         "aws_lamda": False,
         "gcp_bigquery": False
     }

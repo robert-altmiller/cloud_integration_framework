@@ -78,10 +78,10 @@ class azurestorageaccount(azureclass):
         return self.create_container_client().list_blobs()
 
 
-    def upload_blob(self, blobpath):
+    def upload_blob(self, localfilepath, blobfilepath, overwrite = False):
         """upload a blob to an azure storage account container"""
-        with open(blobpath, "rb") as data:
-           self.create_container_client().upload_blob(name="my_blob", data = data)
+        with open(localfilepath, "rb") as data:
+           self.create_container_client().upload_blob(name = blobfilepath, data = data, overwrite = overwrite)
 
 
     def delete_blob(self):
@@ -114,5 +114,10 @@ class azurestorageaccount(azureclass):
 
 
 
-
+    def upload_blob_bucket_file(self, storageacctname = None, container = None, localfilepath = None, blobfilepath = None, overwrite = False):
+        """upload local file to azure storage account container and maintain local folder structure"""
+        self.set_azure_storage_acct_name_override(storageacctname)
+        self.set_azure_storage_acct_container_name_override(container)
+        self.upload_blob(localfilepath, blobfilepath, overwrite)
+        print(f"{localfilepath} uploaded to azure storage account {storageacctname}: {blobfilepath} successfully....")
 

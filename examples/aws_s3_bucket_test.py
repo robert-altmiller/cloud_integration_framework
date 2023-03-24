@@ -60,4 +60,5 @@ def aws_s3_bucket_api_test(aws_s3_obj = None):
         aws_s3_obj.upload_s3_bucket_file(tobucket, s3localfilepath, s3bucketfilepath)
         # cleanup local s3 files
         delete_local_file(s3localfilepath)
+    # clean up local s3 directories
     delete_local_dirs(f'{aws_s3_obj.config["LOCAL_DATA_FOLDER"]}/s3bucket/{frombucket}')
