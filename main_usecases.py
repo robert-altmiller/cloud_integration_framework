@@ -13,8 +13,8 @@ def run_test(usecase_category = None, usecase_name = None):
     """has a list of the api tests to run"""
     runusecases= {
         "migration":{
-            "s3_azurestorage": False,
-            "azurestorage_s3": True ,       
+            "s3_azurestorage": True,
+            "azurestorage_s3": False,       
             "s3_gcp": False,
             "gcp_s3": False,
             "gcp_azurestorage": False,
@@ -34,30 +34,41 @@ def main():
     if run_test("migration", "azurestorage_s3") == True:
 
         migrationconfig = {
-            # a list of all the containers to download from a single azure storage account
+            # az storage account which needs to be migrated 
             "azstorageacctname": "rastorageaccount",
+            # a list of all the containers to download from a single azure storage account (must be all lowercase)
             "azglobalcontainers": ["bronze", "silver", "gold"],
-            # s3 bucket to copy the azure storage account files to
-            "awstobucket": "ra-aws-bucket-dev"
+            # s3 bucket to migrate the storage account containers to
+            "s3bucketname": "ra-aws-bucket-dev",
+            # this parameter will write each az storage account container as a folder in a single s3 bucket
+            # if set to TRUE each az storage account container will be created as an individual folder in a single s3 bucket
+            # if set to FALSE each az storage container will be created as an individual s3 buckets
+            "toplevel_azstoragecontainers_as_folders_ins3": True,
+
         }
-
-        az_azure_storage_obj = azurestorageaccount(config)
+        az_storage_obj = azurestorageaccount(config)
         aws_s3_obj = awss3bucket(config)
-        az_storage_to_aws_s3(migrationconfig, az_azure_storage_obj, aws_s3_obj)
+        az_storage_to_aws_s3(migrationconfig, az_storage_obj, aws_s3_obj)
 
 
-    # azure storage account migration to s3 bucket
+    # s3 bucket migration to azure storage account
     if run_test("migration", "s3_azurestorage") == True:
 
         migrationconfig = {
-            # a list of all the containers to download from a single azure storage account
-            "s3bucketname": "ra-aws-bucket-dev",
-            "azglobalcontainers": ["bronze", "silver", "gold"],
+            # s3 bucket which needs to be migrated
+            "s3bucketname": "ra-bucket-migrate",
+            # storage account to migrate s3 bucket to
+            "azstorageacctname": "rastorageaccount",
+            # storage account container to migrate s3 bucket to (cannot contain invalid chars like '.', and must be all lowercase)
+            "azmigratecontainer": "s3-migration-container",
+            # this parameter will write the top level s3 folders as new containers in the azure storage account
+            # if set to TRUE top level s3 bucket folders will be created as individual az storage account containers.  Individual root level files will be copied into migrationconfig["azmigratecontainer"]
+            # if set to FALSE top level s3 bucket folders will be created individual folders in a single az storage account container (e.g. migrationconfig["azmigratecontainer"])
+            "toplevel_s3fldrs_as_containers_inazstorage": True,
         }
-
-        az_azure_storage_obj = azurestorageaccount(config)
+        az_storage_obj = azurestorageaccount(config)
         aws_s3_obj = awss3bucket(config)
-        az_storage_to_aws_s3(migrationconfig, az_azure_storage_obj, aws_s3_obj)
+        aws_s3_to_az_storage(migrationconfig, az_storage_obj, aws_s3_obj)
 
 
 if __name__ == "__main__":

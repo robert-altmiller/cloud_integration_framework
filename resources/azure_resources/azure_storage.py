@@ -116,10 +116,16 @@ class azurestorageaccount(azureclass):
 
     def upload_blob_from_local(self, storageacctname = None, container = None, localfilepath = None, blobfilepath = None, overwrite = False):
         """upload local file to azure storage account container and maintain local folder structure"""
+        
+        if len(container) < 3: container = container + "-addedchars" # added chars
+        if len(container) > 24: container = container[:24] # take first 24 characters
+        # remove invalid characters and fix case on the az container (e.g. no capital letters, no commas, no periods)
+        # lowercase = True, uppercase = False, removespaces = True, removenumbers = False, removepunctuation = True, singledashes = True, removeunderscores = True
+        container = remove_invalid_chars(container, True, False, True, False, True, True, True)
+
         self.set_azure_storage_acct_name_override(storageacctname)
         self.set_azure_storage_acct_container_name_override(container)
         # ensure the container exists in the azure storage account
         self.create_container(container)
         self.upload_blob(localfilepath, blobfilepath, overwrite)
-        print(f"{localfilepath} uploaded to azure storage account {storageacctname}: {blobfilepath} successfully....\n")
-
+        print(f"{localfilepath} uploaded to azure storage account {storageacctname}/{container}: {blobfilepath} successfully....\n")

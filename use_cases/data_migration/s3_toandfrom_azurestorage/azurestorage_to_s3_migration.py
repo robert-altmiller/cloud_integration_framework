@@ -15,9 +15,7 @@ def download_azure_storage_account_files_locally(config, azstorageobj):
     # get list of all blobs in container (format: container/filepath/filename)
     # and download all the blobs locally under the data folder while maintaining blob folder structure in container
     # this function can run locally on a scaled virtual machine hosted in a kubernetes container 
-    print("downloads azure storage account blobs locally:")
-    storageacctname = "rastorageaccount"
-
+    print("downloads azure storage account blobs locally:\n")
     azstoragelocalfilepaths = []
     for globalcontainer in config["azglobalcontainers"]:
         azstorageobj.set_azure_storage_acct_container_name_override(globalcontainer)
@@ -37,10 +35,10 @@ def download_azure_storage_account_files_locally(config, azstorageobj):
 def upload_to_s3_bucket(config, s3obj, localpaths):
 
     # upload s3 local files to a mew aws s3 bucket while maintaining the local folder stucture from another s3 bucket
-    print("uploading local files to s3 bucket:")
+    print("uploading local files to s3 bucket:\n")
     for localpath in localpaths:
         s3bucketfilepath = localpath.split(config["azstorageacctname"])[1].strip("/")
         print(s3bucketfilepath)
-        s3obj.upload_s3_bucket_file_from_local(config["awstobucket"], localpath, s3bucketfilepath)
+        s3obj.upload_s3_bucket_file_from_local(config["s3bucketname"], localpath, s3bucketfilepath)
         # cleanup local azure storage account blob files
         delete_local_file(localpath)

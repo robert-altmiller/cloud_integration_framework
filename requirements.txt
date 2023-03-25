@@ -13,3 +13,4 @@ azure-common
 msrestazure
 functools
 requests
+regex

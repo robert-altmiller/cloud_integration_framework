@@ -1,5 +1,5 @@
 # library and file imports
-import os, json, shutil
+import os, json, shutil, re, string
 from pathlib import Path
 import pandas as pd
 
@@ -72,3 +72,25 @@ def delete_local_dirs(folderpath = None):
     """remove local directories"""
     rootfolder = Path(__file__).parents[1]
     shutil.rmtree(f"{rootfolder}/{folderpath}")
+
+
+def remove_invalid_chars(
+        inputstr = None, 
+        lowercase = True,
+        uppercase = False,
+        removespaces = True,
+        removenumbers = True,
+        removepunctuation = True,
+        singledashes = True,
+        removeunderscores = True
+    ):
+    """remove all characters from python string besides letters dynamically"""
+    if lowercase: inputstr = inputstr.lower()
+    if uppercase: inputstr = inputstr.upper()
+    if removespaces: inputstr = inputstr.replace(' ', '')
+    if singledashes: inputstr = re.sub(r'(-)+', r'-', inputstr)
+    if removenumbers: inputstr = inputstr.maketrans('', '', string.digits)
+    if removepunctuation: inputstr = re.sub(r'[^\w\s]', '', inputstr)
+    if removeunderscores: inputstr = inputstr.replace('_', '')
+    return inputstr
+
