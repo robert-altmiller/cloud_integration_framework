@@ -51,11 +51,12 @@ def upload_to_azure_storage(config, azstorageobj, localpaths):
 
             # apply fuzzy logic to see if any top level s3 folders match config["fuzzymatchcontainers"] (e.g. bronze, silver, gold)
             # this helps with consolidating top level s3 folders in the same az storage account containers.
-            containersfuzzyscorelist = [{cont: get_fuzzy_match_score(container, cont)} for cont in config["fuzzymatchcontainers"]]
-            containersfuzzyscoredict = {k: v for d in containersfuzzyscorelist for k, v in d.items()}
-            if max(containersfuzzyscoredict.values()) > 100: # then fuzzy match found (e.g. bronze, silver, gold)
-                container = max(containersfuzzyscoredict, key=containersfuzzyscoredict.get)
-                print(f"fuzzy match container override is {container}\n")
+            if len(config["fuzzymatchcontainers"]) > 0:
+                containersfuzzyscorelist = [{cont: get_fuzzy_match_score(container, cont)} for cont in config["fuzzymatchcontainers"]]
+                containersfuzzyscoredict = {k: v for d in containersfuzzyscorelist for k, v in d.items()}
+                if max(containersfuzzyscoredict.values()) > 100: # then fuzzy match found (e.g. bronze, silver, gold)
+                    container = max(containersfuzzyscoredict, key=containersfuzzyscoredict.get)
+                    print(f"fuzzy match container override is {container}\n")
                 
         else: container = config["azmigratecontainer"]
 

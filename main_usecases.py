@@ -65,8 +65,8 @@ def main():
             # if set to TRUE top level s3 bucket folders will be created as individual az storage account containers.  Individual root level files will be copied into migrationconfig["azmigratecontainer"]
             # if set to FALSE top level s3 bucket folders will be created individual folders in a single az storage account container (e.g. migrationconfig["azmigratecontainer"])
             "toplevel_s3fldrs_as_containers_inazstorage": True,
-            # this parameter is used to consolidate folders similar to names below into the same container if toplevel_s3fldrs_as_containers_inazstorage = True
-            "fuzzymatchcontainers": ["bronze", "silver", "gold"] # could also be ["raw", "refined", "produced"]
+            # this parameter is used to consolidate s3 folders similar to names below into the same az container if toplevel_s3fldrs_as_containers_inazstorage = True
+            "fuzzymatchcontainers": ["bronze", "silver", "gold"] # could also be ["raw", "refined", "produced"] or []
         }
         az_storage_obj = azurestorageaccount(config)
         aws_s3_obj = awss3bucket(config)
