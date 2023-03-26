@@ -14,3 +14,4 @@ msrestazure
 functools
 requests
 regex
+fuzzywuzzy

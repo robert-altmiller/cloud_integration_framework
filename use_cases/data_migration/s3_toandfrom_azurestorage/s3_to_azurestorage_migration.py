@@ -1,5 +1,6 @@
 # library and file imports
 from helpers.generic_helpers import *
+from helpers.fuzzy_matching import *
 
 
 def aws_s3_to_az_storage(config, azstorageobj, s3obj):
@@ -32,20 +33,32 @@ def download_s3_bucket_files_locally(config, s3obj):
 
 
 def upload_to_azure_storage(config, azstorageobj, localpaths):
-    
+
     # upload local files to azure storage account container while maintaining the local folder stucture
     print("uploading local files to azure storage account container:\n")
     for localpath in localpaths:
         blobfilepath = localpath.split(config["s3bucketname"])[1].strip("/")
 
+
         # defines how to write the s3 bucket to the az storage acct -  in a single
         # az storage acct container or in multiple az storage acct containers.
         if config["toplevel_s3fldrs_as_containers_inazstorage"] == True:
             container = blobfilepath.split("/")[0]
+
             # we need a place to store root level files with no subdirectories
             if container == blobfilepath: container = config["azmigratecontainer"]
             else: blobfilepath = blobfilepath.split(container)[1].strip("/")
+
+            # apply fuzzy logic to see if any top level s3 folders match config["fuzzymatchcontainers"] (e.g. bronze, silver, gold)
+            # this helps with consolidating top level s3 folders in the same az storage account containers.
+            containersfuzzyscorelist = [{cont: get_fuzzy_match_score(container, cont)} for cont in config["fuzzymatchcontainers"]]
+            containersfuzzyscoredict = {k: v for d in containersfuzzyscorelist for k, v in d.items()}
+            if max(containersfuzzyscoredict.values()) > 100: # then fuzzy match found (e.g. bronze, silver, gold)
+                container = max(containersfuzzyscoredict, key=containersfuzzyscoredict.get)
+                print(f"fuzzy match container override is {container}\n")
+                
         else: container = config["azmigratecontainer"]
+
 
         azstorageobj.upload_blob_from_local(config["azstorageacctname"], container, localpath, blobfilepath, True)
         # cleanup local azure storage account blob files

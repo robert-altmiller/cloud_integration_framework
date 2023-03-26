@@ -120,8 +120,8 @@ class azurestorageaccount(azureclass):
         if len(container) < 3: container = container + "-addedchars" # added chars
         if len(container) > 24: container = container[:24] # take first 24 characters
         # remove invalid characters and fix case on the az container (e.g. no capital letters, no commas, no periods)
-        # lowercase = True, uppercase = False, removespaces = True, removenumbers = False, removepunctuation = True, singledashes = True, removeunderscores = True
-        container = remove_invalid_chars(container, True, False, True, False, True, True, True)
+        # lowercase = True, uppercase = False, removenumbers = False, removespaces = True, removepunctuation = True, singledashes = True
+        container = remove_invalid_chars(container, True, False, False, True, True, True)
 
         self.set_azure_storage_acct_name_override(storageacctname)
         self.set_azure_storage_acct_container_name_override(container)

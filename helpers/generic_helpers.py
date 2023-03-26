@@ -76,21 +76,22 @@ def delete_local_dirs(folderpath = None):
 
 def remove_invalid_chars(
         inputstr = None, 
-        lowercase = True,
+        lowercase = False,
         uppercase = False,
-        removespaces = True,
-        removenumbers = True,
-        removepunctuation = True,
-        singledashes = True,
-        removeunderscores = True
+        removenumbers = False,
+        removespaces = False,
+        removepunctuation = False,
+        singledashes = False
     ):
     """remove all characters from python string besides letters dynamically"""
     if lowercase: inputstr = inputstr.lower()
     if uppercase: inputstr = inputstr.upper()
+    if removenumbers: inputstr = re.sub(r'[0-9]', '', inputstr)
     if removespaces: inputstr = inputstr.replace(' ', '')
+    if removepunctuation:
+        punctuation = [punct for punct in str(string.punctuation)]
+        punctuation.remove("-")
+        for punct in punctuation:
+            inputstr = inputstr.replace(punct, '')
     if singledashes: inputstr = re.sub(r'(-)+', r'-', inputstr)
-    if removenumbers: inputstr = inputstr.maketrans('', '', string.digits)
-    if removepunctuation: inputstr = re.sub(r'[^\w\s]', '', inputstr)
-    if removeunderscores: inputstr = inputstr.replace('_', '')
     return inputstr
-
