@@ -56,17 +56,18 @@ def main():
 
         migrationconfig = {
             # s3 bucket which needs to be migrated
-            "s3bucketname": "ra-bucket-migrate",
+            "s3bucketname": "ra-bucket-migrate", # MANDATORY
             # storage account to migrate s3 bucket to
-            "azstorageacctname": "rastorageaccount",
-            # storage account container to migrate s3 bucket to (cannot contain invalid chars like '.', and must be all lowercase)
-            "azmigratecontainer": "s3-migration-container",
-            # this parameter will write the top level s3 folders as new containers in the azure storage account
+            "azstorageacctname": "rastorageaccount", # MANDATORY
+            # storage account container to migrate s3 bucket to (mandatory)
+            "azmigratecontainer": "s3-migration-container", # MANDATORY
+            # this parameter will write the top level s3 folders as new containers in the azure storage account 
             # if set to TRUE top level s3 bucket folders will be created as individual az storage account containers.  Individual root level files will be copied into migrationconfig["azmigratecontainer"]
             # if set to FALSE top level s3 bucket folders will be created individual folders in a single az storage account container (e.g. migrationconfig["azmigratecontainer"])
-            "toplevel_s3fldrs_as_containers_inazstorage": True,
+            "toplevel_s3fldrs_as_containers_inazstorage": True, # OPTIONAL
             # this parameter is used to consolidate s3 folders similar to names below into the same az container if toplevel_s3fldrs_as_containers_inazstorage = True
-            "fuzzymatchcontainers": ["bronze", "silver", "gold"] # could also be ["raw", "refined", "produced"] or []
+            # DEFAULT VALUE IS None, could also be ["bronze", "silver", "gold"]
+            "fuzzymatchcontainers": ["bronze", "silver", "gold"] # OPTIONAL
         }
         az_storage_obj = azurestorageaccount(config)
         aws_s3_obj = awss3bucket(config)
