@@ -1,0 +1,17 @@
+python-dotenv
+fuzzywuzzy
+pandas
+pyspark
+mlflow
+azure-ai-textanalytics
+numpy
+boto3
+msal
+azure-storage-blob
+azure-identity
+azure-common
+msrestazure
+functools
+requests
+regex
+fuzzywuzzy

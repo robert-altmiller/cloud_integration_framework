@@ -1,0 +1,50 @@
+# ----GENERIC ENVIRONMENT VARIABLES----
+LOCAL_DATA_FOLDER=data
+ENVIRONMENT=dev
+
+# ----AZURE ENVIRONMENT VARIABLES----
+
+# environment vars
+AZURE_TENANT_ID=XXXXXXXXXXXXX
+AZURE_SUBSCRIPTION_ID=XXXXXXXXXXXXXX
+AZURE_RESOURCE_GROUP_NAME=my-resource-group
+AZURE_CLIENT_ID=XXXXXXXXXXXXXXX # (e.g. ra-sp-dev)
+AZURE_CLIENT_SECRET=XXXXXXXXXX
+
+# authentication vars
+AZURE_AUTHENTICATION_AUTHORITY=https://login.microsoftonline.com
+AZURE_AUTHENTICATION_GRANT_SCOPE=https://graph.microsoft.com/.default
+
+# cognitive services vars
+AZURE_COG_SERVICES_RESOURCE_NAME= my-cog-service# needs environment name added to cogservicesresourcename in config.py
+AZURE_COG_SERVICES_BASE_URL=cognitiveservices.azure.com/
+AZURE_COG_SERVICES_API_KEY=XXXXXXXXXXXXX
+
+# storage account vars
+AZURE_STORAGE_ACCOUNT_NAME=mystoragaccount # needs environment name added to storageaccountname in config.py
+AZURE_STORAGE_ACCOUNT_CONTAINER=bronze
+AZURE_STORAGE_ACCOUNT_FOLDER_PATH=/kaggle_datasets/car_data/
+AZURE_STORAGE_ACCOUNT_FILE_NAME=cardata.csv
+AZURE_STORAGE_ACCOUNT_KEY=XXXXXXXXXXXXX
+
+# ----AWS ENVIRONMENT VARIABLES----
+
+# environment vars
+AWS_GLOBAL_REGION=us-east-2
+AWS_GLOBAL_USER_ID=XXXXXXXXXXXXX
+AWS_GLOBAL_USER_KEY=XXXXXXXXXXXXX
+
+# s3 account vars
+AWS_S3_REGION=us-east-2
+AWS_S3_BUCKET_TYPE=s3
+AWS_S3_BUCKET_NAME=my-aws-bucket # needs environment name added to bucketname in config.py
+AWS_S3_BUCKET_FOLDER_PATH=/Bronze/kaggle_datasets/red_wine_quality_dataset/
+AWS_S3_BUCKET_FILE_NAME=winequality-red.csv
+AWS_S3_BUCKET_ACCESS_KEY_ID=XXXXXXXXXXXXX
+AWS_S3_BUCKET_SECRET_KEY_ID=XXXXXXXXXXXX
+
+
+
+# ---- GCP ENVIRONMENT VARIABLES ----
+
+# lamda function vars
